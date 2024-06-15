@@ -1,6 +1,9 @@
+import { Model } from 'mongoose';
+import { never } from 'zod';
+
 export type TName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 export type TGuardian = {
@@ -8,18 +11,19 @@ export type TGuardian = {
   fatherOccupation: string;
   fatherContactNo: string;
   motherName: string;
-  motherOccupatio: string;
-  MotherContactNo: string;
+  motherOccupation: string;
+  motherContactNo: string;
 };
 export type TLocalGuardian = {
   name: string;
-  occupation: string;
+
   contactNo: string;
   address: string;
 };
 
 export type TStudent = {
   id: string;
+  passwoard:string,
   name: TName;
   gender: 'Male' | 'Female';
   dateOfBirth: string;
@@ -33,4 +37,7 @@ export type TStudent = {
   localGuardian: TLocalGuardian;
   profileImg?: string;
   isActive: 'active' | 'blocked';
+  isDeleted:boolean;
 };
+
+
