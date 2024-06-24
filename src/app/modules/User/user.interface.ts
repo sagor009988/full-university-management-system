@@ -12,3 +12,8 @@ export type TUser={
 
 }
 
+export type newUser={
+    role:string;
+    password:string;
+    id:string
+}
