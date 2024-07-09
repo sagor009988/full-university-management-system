@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { studentServices } from './student.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 
 
 
@@ -28,13 +30,10 @@ import { studentServices } from './student.service';
 
 //get All Students
 const getAllStudents = async (req: Request, res: Response ,next:NextFunction) => {
+
   try {
     const result = await studentServices.getAllStudentsFromDb();
-    res.status(200).json({
-      success: true,
-      message: 'students  are retrived successFully',
-      data: result,
-    });
+    sendResponse(res,{statusCode:httpStatus.OK,success:true,message:'All Students are get successFully',data:result})
   } catch (err) {
     next(err)
   }
@@ -45,11 +44,8 @@ const getSingleStudent = async (req: Request, res: Response ,next:NextFunction) 
   try {
     const { studentId } = req.params;
     const result = await studentServices.getSingleStudentsFromDb(studentId);
-    res.status(200).json({
-      success: true,
-      message: 'student is Retrive successFully',
-      data: result,
-    });
+
+    sendResponse(res,{statusCode:httpStatus.OK,success:true,message:'student get successFully',data:result});
   } catch (err) {
    next(err)
   }
@@ -59,13 +55,8 @@ const deleteStudent=async(req:Request,res:Response,next:NextFunction)=>{
   try{
     const {studentId}=req.params
   const result=await studentServices.deleteStudentFromDb(studentId)
-  res.status(200).json({
-    success:true,
-    message:'Student Is delete successfully',
-    data:result
-  })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }catch(err:any){
+  sendResponse(res,{statusCode:httpStatus.OK,success:true,message:'student Delete successFully',data:result})
+  }catch(err){
    next(err)
 
 }
