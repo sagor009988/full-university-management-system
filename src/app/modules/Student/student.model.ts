@@ -6,9 +6,8 @@ import {
   TName,
   TStudent,
 } from './student.interface';
-import bcrypt from 'bcrypt';
-import config from '../../config';
-import { boolean } from 'zod';
+
+
 
 const nameSchema = new Schema<TName>({
   firstName: {
@@ -63,10 +62,13 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent>({
   id: { type: String, required: true, unique: true },
-  passwoard: {
-    type: String,
-    required: [true, 'password is required'],
-  },
+  
+  user:{
+    type:Schema.Types.ObjectId,
+    required:[true ,'User id is required'],
+    unique:true,
+    ref:'UserModel'
+    },
   name: {
     type: nameSchema,
     required: [true, 'Name is required'],
@@ -106,11 +108,7 @@ const studentSchema = new Schema<TStudent>({
   guardian: guardianSchema,
   localGuardian: localGuardianSchema,
   profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: ['active', 'blocked'],
-    default: 'active',
-  },
+ 
   isDeleted: {
     type: Boolean,
     default: false,
@@ -148,20 +146,6 @@ studentSchema.pre('aggregate',function(next){
   next()
 })
 
-//pre middle wire
-studentSchema.pre('save', async function (next) {
-  const user = this;
-  user.passwoard = await bcrypt.hash(
-    user.passwoard,
-    Number(config.bcrypt_salt_rounds),
-  );
-});
-
-//post middle wire
-studentSchema.post('save', function (doc, next) {
-  this.passwoard = '';
-  next();
-});
 
 // 3. Create a Model.
-export const StudentModel = model<TStudent>('Student', studentSchema)
+export const StudentModel = model<TStudent>('student', studentSchema)

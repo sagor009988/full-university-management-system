@@ -30,7 +30,7 @@ const localGuardianSchema = z.object({
 
 const studenValidationSchema = z.object({
   id: z.string().nonempty('ID is required'),
-  passwoard:z.string().nonempty('passwordd ddd is required'),
+ 
   name: nameSchema,
   gender: z.enum(['Male', 'Female']),
   dateOfBirth: z.string(),
@@ -45,7 +45,6 @@ const studenValidationSchema = z.object({
   guardian: guardianSchema,
   localGuardian: localGuardianSchema,
   profileImg: z.string().optional(),
-  isActive: z.enum(['active', 'blocked']).default('active'),
  isDeleted:z.boolean()
 });
 

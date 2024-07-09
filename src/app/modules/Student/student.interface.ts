@@ -1,5 +1,5 @@
-import { Model, Types } from 'mongoose';
-import { never } from 'zod';
+import { Types } from "mongoose";
+
 
 export type TName = {
   firstName: string;
@@ -23,7 +23,7 @@ export type TLocalGuardian = {
 
 export type TStudent = {
   id: string;
-  passwoard:string,
+  user:Types.ObjectId
   name: TName;
   gender: 'Male' | 'Female';
   dateOfBirth: string;
@@ -36,7 +36,7 @@ export type TStudent = {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImg?: string;
-  isActive: 'active' | 'blocked';
+
   isDeleted:boolean;
 };
 

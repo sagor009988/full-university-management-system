@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { studentServices } from './student.service';
-import { StudentZodValidationSchema } from './studend.zod.validation';
+
 
 
 // const createStudent = async (req: Request, res: Response) => {
@@ -27,7 +27,7 @@ import { StudentZodValidationSchema } from './studend.zod.validation';
 // };
 
 //get All Students
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (req: Request, res: Response ,next:NextFunction) => {
   try {
     const result = await studentServices.getAllStudentsFromDb();
     res.status(200).json({
@@ -35,17 +35,13 @@ const getAllStudents = async (req: Request, res: Response) => {
       message: 'students  are retrived successFully',
       data: result,
     });
-  } catch (Error) {
-    res.status(500).json({
-      status: false,
-      message:Error ||"something wrong",
-      err: Error,
-    });
+  } catch (err) {
+    next(err)
   }
 };
 //get single
 
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (req: Request, res: Response ,next:NextFunction) => {
   try {
     const { studentId } = req.params;
     const result = await studentServices.getSingleStudentsFromDb(studentId);
@@ -54,16 +50,12 @@ const getSingleStudent = async (req: Request, res: Response) => {
       message: 'student is Retrive successFully',
       data: result,
     });
-  } catch (Error) {
-    res.status(500).json({
-      status: false,
-      message:Error ||"something wrong",
-      err: Error,
-    });
+  } catch (err) {
+   next(err)
   }
 };
 //dlete student
-const deleteStudent=async(req:Request,res:Response)=>{
+const deleteStudent=async(req:Request,res:Response,next:NextFunction)=>{
   try{
     const {studentId}=req.params
   const result=await studentServices.deleteStudentFromDb(studentId)
@@ -72,18 +64,15 @@ const deleteStudent=async(req:Request,res:Response)=>{
     message:'Student Is delete successfully',
     data:result
   })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }catch(err:any){
-    res.status(500).json({
-      success:false,
-      message:err.message || 'Some is wrong'
-    })
-  }
+   next(err)
 
 }
-
+}
 export const studentController = {
 
   getAllStudents,
   getSingleStudent,
   deleteStudent
-};
+}
