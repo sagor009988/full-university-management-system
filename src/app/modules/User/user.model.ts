@@ -32,7 +32,7 @@ const UserSchema:Schema=new Schema<TUser>({
 UserSchema.pre('save', async function (next) {
   const user = this;
   user.password = await bcrypt.hash(
-    user.password,
+    user.password as string,
     Number(config.bcrypt_salt_rounds),
   );
   next()
@@ -40,7 +40,7 @@ UserSchema.pre('save', async function (next) {
 
 //post middle wire
 UserSchema.post('save', function (doc, next) {
-  this.passwoard = '';
+  this.password = '';
   next();
 });
 

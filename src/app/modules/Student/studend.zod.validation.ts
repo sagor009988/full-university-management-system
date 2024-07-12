@@ -28,12 +28,13 @@ const localGuardianSchema = z.object({
   address: z.string().nonempty('Local Guardian address is required'),
 });
 
-const studenValidationSchema = z.object({
-  id: z.string().nonempty('ID is required'),
- 
+const studenCreateValidationSchema = z.object({
+ body:z.object({
+  password:z.string().max(20),
+  student:z.object({
   name: nameSchema,
   gender: z.enum(['Male', 'Female']),
-  dateOfBirth: z.string(),
+  dateOfBirth: z.date(),
   email: z.string()
     .nonempty('email is required')
     .email('Invalid email format'),
@@ -45,7 +46,11 @@ const studenValidationSchema = z.object({
   guardian: guardianSchema,
   localGuardian: localGuardianSchema,
   profileImg: z.string().optional(),
- isDeleted:z.boolean()
+
+  })
+ })
 });
 
-export const StudentZodValidationSchema = studenValidationSchema;
+export const StudentZodValidations ={
+   studenCreateValidationSchema
+}
